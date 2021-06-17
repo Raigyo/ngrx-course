@@ -6,7 +6,7 @@ June 2021
 
 ---
 
-![logo](_readme-img/logo.jpg)
+![logo](_readme-img/logo.png)
 
 ## To Run the Development Backend Server
 
