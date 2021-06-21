@@ -1,162 +1,86 @@
+# NgRx (with NgRx Data) - The Complete Guide
 
-## Ngrx (with NgRx Data) - The Complete Guide
+June 2021
 
-This repository contains the code of the video course [Ngrx (with NgRx Data) - The Complete Guide](https://angular-university.io/course/ngrx-course).
+> 🔨 From udemy: [NgRx (with NgRx Data) - The Complete Guide - Vasco Cavalheiro / Angular University](https://www.udemy.com/course/ngrx-course/).
 
-This course repository is updated to Angular v12:
+---
 
-![Ngrx (with NgRx Data) - The Complete Guide](https://angular-university.s3-us-west-1.amazonaws.com/course-images/ngrx-v2.png)
+![logo](_readme-img/logo.png)
 
+ReactiveX is a library for composing asynchronous and event-based programs by using observable sequences.
 
-# Installation pre-requisites
+It extends the observer pattern to support sequences of data and/or events and adds operators that allow you to compose sequences together declaratively while abstracting away concerns about things like low-level threading, synchronization, thread-safety, concurrent data structures, and non-blocking I/O.
 
-For taking the course we recommend installing Node 14. These are some tutorials to install node in different operating systems:
-
-- [Install Node and NPM on Windows](https://www.youtube.com/watch?v=8ODS6RM6x7g)
-- [Install Node and NPM on Linux](https://www.youtube.com/watch?v=yUdHk-Dk_BY)
-- [Install Node and NPM on Mac](https://www.youtube.com/watch?v=Imj8PgG3bZU)
-
-To easily switch between node versions on your machine, we recommend using a node virtual environment tool such as [nave](https://www.npmjs.com/package/nave) or [nvm-windows](https://github.com/coreybutler/nvm-windows), depending on your operating system. 
-
-For example, here is how you switch to a new node version using nave:
-
-    # note that you don't even need to update your node version before installing nave
-    npm install -g nave
-    
-    nave use 12.3.1
-    node -v
-    v12.3.1
-
-# Installing the Angular CLI
-
-With the following command the angular-cli will be installed globally in your machine:
-
-    npm install -g @angular/cli 
-
-
-# How To install this repository
-
-We can install the master branch using the following commands:
-
-    git clone https://github.com/angular-university/angular-ngrx-course.git
-    
-This repository is made of several separate npm modules, that are installable separately. For example, to run the au-input module, we can do the following:
-    
-    cd ngrx-course
-    npm install
-
-Its also possible to install the modules as usual using npm:
-
-    npm install 
-
-This should take a couple of minutes. If there are issues, please post the complete error message in the Questions section of the course.
-
-# To Run the Development Backend Server
+## To Run the Development Backend Server
 
 We can start the sample application backend with the following command:
 
-    npm run server
+    `npm run server`
 
 This is a small Node REST API server.
 
-# To run the Development UI Server
+## To run the Development UI Server
 
 To run the frontend part of our code, we will use the Angular CLI:
 
-    npm start 
+    `npm start`
 
 The application is visible at port 4200: [http://localhost:4200](http://localhost:4200)
 
+## Generate store for aspecific module
 
+`ng generate store auth/Auth --module auth.module.ts`
 
-# Important 
+```batch
+CREATE src/app/auth/reducers/index.ts (359 bytes)
+UPDATE src/app/auth/auth.module.ts (1221 bytes)
+```
 
-This repository has multiple branches, have a look at the beginning of each section to see the name of the branch.
+_src/app/auth/auth.module.ts_
 
-At certain points along the course, you will be asked to checkout other remote branches other than master. You can view all branches that you have available remotely using the following command:
+```ts
+@NgModule({
+  imports: [
+    // ...
+    StoreModule.forFeature("auth", fromAuth.reducers),
+  ],
+```
 
-    git branch -a
+![logo](_readme-img/devtool-01.png)
 
-  The remote branches have their starting in origin, such as for example 1-start.
+## Dependancies
 
-We can checkout the remote branch and start tracking it with a local branch that has the same name, by using the following command:
+- [NgRx Store](https://ngrx.io/guide/store/why): NgRx Store provides state management for creating maintainable, explicit applications through the use of single state and actions in order to express state changes. In cases where you don't need a global, application-wide solution to manage state, consider using NgRx ComponentStore which provides a solution for local state management.
 
-      git checkout -b 1-start 
+`ng add @ngrx/store`
 
-It's also possible to download a ZIP file for a given branch,  using the branch dropdown on this page on the top left, and then selecting the Clone or Download / Download as ZIP button.
+`ng add @ngrx/store-devtools`
 
-# Other Courses
+## Concepts
 
-# Angular Core Deep Dive Course
+### Pipes
 
-If you are looking for the [Angular Core Deep Dive Course](https://angular-university.io/course/angular-course), the repo with the full code can be found here:
+Use pipes to transform strings, currency amounts, dates, and other data for display. Pipes are simple functions you can use in template expressions to accept an input value and return a transformed value. Pipes are useful because you can use them throughout your application, while only declaring each pipe once.
 
-![Angular Core Deep Dive](https://s3-us-west-1.amazonaws.com/angular-university/course-images/angular-core-in-depth-small.png)
+### Tap
 
-# RxJs In Practice
+Can perform side effects with observed data but does not modify the stream in any way. Formerly called do(). You can think of it as if observable was an array over time, then tap() would be an equivalent to Array.forEach().
 
-If you are looking for the [RxJs In Practice](https://angular-university.io/course/rxjs-course), the repo with the full code can be found here:
+### Noop
 
-![RxJs In Practice Course](https://s3-us-west-1.amazonaws.com/angular-university/course-images/rxjs-in-practice-course.png)
+angular.noop is an empty function that can be used as a placeholder when you need to pass some function as a param.
 
+### Side effect
 
-# Angular Testing Course
+A side effect is when a function relies on, or modifies, something outside its parameters to do something. For example, a function which reads or writes from a variable outside its own arguments, a database, a file, or the console can be described as having side effects.
 
-If you are looking for the [Angular Testing Course](https://angular-university.io/course/angular-testing-course), the repo with the full code can be found here:
+### NgRx Actions
 
-![Angular Testing Course](https://s3-us-west-1.amazonaws.com/angular-university/course-images/angular-testing-small.png)
+Actions are one of the main building blocks in NgRx. Actions express unique events that happen throughout your application. From user interaction with the page, external interaction through network requests, and direct interaction with device APIs, these and more events are described with actions. Dispatching doesn't affect the store state.
 
-# Serverless Angular with Firebase Course
+## Useful links
 
-If you are looking for the [Serverless Angular with Firebase Course](https://angular-university.io/course/firebase-course), the repo with the full code can be found here:
-
-![Serverless Angular with Firebase Course](https://s3-us-west-1.amazonaws.com/angular-university/course-images/serverless-angular-small.png)
-
-# Angular Universal Course
-
-If you are looking for the [Angular Universal Course](https://angular-university.io/course/angular-universal-course), the repo with the full code can be found here:
-
-![Angular Universal Course](https://s3-us-west-1.amazonaws.com/angular-university/course-images/angular-universal-small.png)
-
-# Angular PWA Course
-
-If you are looking for the [Angular PWA Course](https://angular-university.io/course/angular-pwa-course), the repo with the full code can be found here:
-
-![Angular PWA Course - Build the future of the Web Today](https://s3-us-west-1.amazonaws.com/angular-university/course-images/angular-pwa-course.png)
-
-# Angular Security Masterclass
-
-If you are looking for the [Angular Security Masterclass](https://angular-university.io/course/angular-security-course), the repo with the full code can be found here:
-
-[Angular Security Masterclass](https://github.com/angular-university/angular-security-course).
-
-![Angular Security Masterclass](https://s3-us-west-1.amazonaws.com/angular-university/course-images/security-cover-small-v2.png)
-
-# Angular Advanced Library Laboratory Course
-
-If you are looking for the Angular Advanced Course, the repo with the full code can be found here:
-
-[Angular Advanced Library Laboratory Course: Build Your Own Library](https://angular-university.io/course/angular-advanced-course).
-
-![Angular Advanced Library Laboratory Course: Build Your Own Library](https://angular-academy.s3.amazonaws.com/thumbnails/advanced_angular-small-v3.png)
-
-
-## RxJs and Reactive Patterns Angular Architecture Course
-
-If you are looking for the RxJs and Reactive Patterns Angular Architecture Course code, the repo with the full code can be found here:
-
-[RxJs and Reactive Patterns Angular Architecture Course](https://angular-university.io/course/reactive-angular-architecture-course)
-
-![RxJs and Reactive Patterns Angular Architecture Course](https://s3-us-west-1.amazonaws.com/angular-academy/blog/images/rxjs-reactive-patterns-small.png)
-
-
-## Complete Typescript Course - Build A REST API
-
-If you are looking for the Complete Typescript 2 Course - Build a REST API, the repo with the full code can be found here:
-
-[https://angular-university.io/course/typescript-2-tutorial](https://github.com/angular-university/complete-typescript-course)
-
-[Github repo for this course](https://github.com/angular-university/complete-typescript-course)
-
-![Complete Typescript Course](https://angular-academy.s3.amazonaws.com/thumbnails/typescript-2-small.png)
-
+- [ngrx-course](https://github.com/angular-university/ngrx-course)
+- [ReactiveX](http://reactivex.io/)
+- [The Not-So-Scary Guide to Functional Programming](https://www.yld.io/blog/the-not-so-scary-guide-to-functional-programming/)
