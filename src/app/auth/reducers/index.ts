@@ -22,8 +22,14 @@ export const initialAuthState: AuthState = {
 export const authReducer = createReducer(
   initialAuthState,
   on(AuthActions.login, (state, action) => {
+    // we return a new object instead modifying the existing one
     return {
       user: action.user,
+    };
+  }),
+  on(AuthActions.logout, (state, action) => {
+    return {
+      user: undefined,
     };
   })
 );
