@@ -26,6 +26,11 @@ export class AppComponent implements OnInit {
   constructor(private router: Router, private store: Store<AppState>) {}
 
   ngOnInit() {
+    const userProfile = localStorage.getItem("user");
+    // we keep user profile even if we refresh
+    if (userProfile) {
+      this.store.dispatch(login({ user: JSON.parse(userProfile) }));
+    }
     this.router.events.subscribe((event) => {
       switch (true) {
         case event instanceof NavigationStart: {
@@ -48,11 +53,6 @@ export class AppComponent implements OnInit {
     // we can always suscribe to the store service and get data we need or transform them
     // ex:
     // this.store.subscribe((state) => console.log("store value: ", state));
-
-    // We use selector instead following method,
-    // because we just want to send data only once, when the state changes
-    // this.isLoggedIn$ = this.store.pipe(map((state) => !!state["auth"].user));
-    // this.isLoggedOut$ = this.store.pipe(map((state) => !state["auth"].user));
 
     this.isLoggedIn$ = this.store.pipe(select(isLoggedIn));
     this.isLoggedOut$ = this.store.pipe(select(isLoggedOut));
