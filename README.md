@@ -1,6 +1,6 @@
 # NgRx (with NgRx Data) - The Complete Guide
 
-June 2021
+June / July 2021
 
 > 🔨 From udemy: [NgRx (with NgRx Data) - The Complete Guide - Vasco Cavalheiro / Angular University](https://www.udemy.com/course/ngrx-course/).
 
@@ -103,6 +103,60 @@ Selectors are pure functions used for obtaining slices of store state. @ngrx/sto
 
 When using the createSelector and createFeatureSelector functions @ngrx/store keeps track of the latest arguments in which your selector function was invoked. Because selectors are pure functions, the last result can be returned when the arguments match without reinvoking your selector function. This can provide performance benefits, particularly with selectors that perform expensive computation. This practice is known as memoization.
 
+## Time travel debugger + runtimecheck
+
+_app.module.ts_
+
+```ts
+import { RouterState, StoreRouterConnectingModule } from "@ngrx/router-store";
+import { reducers, metaReducers } from "./reducers";
+// ...
+imports: [
+  StoreModule.forRoot(reducers, {
+    metaReducers,
+    runtimeChecks: {
+      strictStateImmutability: true, // states are read only
+      strictActionImmutability: true, // action cannot be mutated by the store
+      strictStateSerializability: true, // ensure that states are serializable
+      strictActionSerializability: true, // ensure that actions are serializable
+    },
+  }),
+  StoreRouterConnectingModule.forRoot({
+    stateKey: "router",
+    routerState: RouterState.Minimal,
+  }),
+];
+```
+
+_src/app/reducers/index.ts_
+
+```ts
+export const reducers: ActionReducerMap<AppState> = {
+  router: routerReducer,
+};
+```
+
+## Meta-reducer
+
+Developers can think of meta-reducers as hooks into the action->reducer pipeline. Meta-reducers allow developers to pre-process actions before normal reducers are invoked.
+
+_src/app/reducers/index.ts_
+
+```ts
+export function logger(reducer: ActionReducer<any>): ActionReducer<any> {
+  return (state, action) => {
+    console.log("state before: ", state);
+    console.log("action", action);
+
+    return reducer(state, action);
+  };
+}
+```
+
+## Resolver
+
+Angular Resolvers are used in order to pre-fetch some data while the user is redirecting from one Route to another. The newly available page will already have the data that is required to be rendered in the page.
+
 ## Useful links
 
 - [ngrx-course](https://github.com/angular-university/ngrx-course)
@@ -110,3 +164,4 @@ When using the createSelector and createFeatureSelector functions @ngrx/store ke
 - [The Not-So-Scary Guide to Functional Programming](https://www.yld.io/blog/the-not-so-scary-guide-to-functional-programming/)
 - [Reactive State management in the angular - NgRx Store, actions, selectors](https://www.initgrep.com/posts/javascript/angular/state-management-in-angualar-using-ngrx)
 - [Understanding Angular Guards](https://codeburst.io/understanding-angular-guards-347b452e1892)
+- [Angular Resolver for Prefetching Data](https://javascript.plainenglish.io/angular-resolver-for-prefetching-data-angular-guards-resolve-40fda257d666)
